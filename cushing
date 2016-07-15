@@ -2,7 +2,8 @@
 
 import sys
 import yaml
-
+import time
+from bamboo_api import BambooAPIClient
 
 
 
@@ -13,10 +14,21 @@ class Business(object):
         self.config = ""
 
     def _parse_config_yml(self):
-        pass
-
+        """
+        Parse the main config file
+        """
+        with open('config.yml', 'r') as stream:
+            try:
+                self.config = yaml.load(stream)
+            except yaml.YAMLError as exc:
+                print(exc)
+                sys.exit(1)
+        print self.config
 
     def _parse_build_yml(self):
+        """
+        Parse the build file
+        """
         with open(self.build_file, 'r') as stream:
             try:
                 self.pipe = yaml.load(stream)
@@ -25,8 +37,9 @@ class Business(object):
                 sys.exit(1)
 
     def _preflight(self):
-        self.bamboo = BambooAPIClient(user= , password= , host= ) 
-        pass
+        self.bamboo = BambooAPIClient(user=self.config['bamboo']['username'], 
+                                      password=self.config['bamboo']['password'],
+                                      host=self.config['bamboo']['hostname']) 
 
     def bambooBuildAndWait(self, waiting_queue):
         """
@@ -34,15 +47,18 @@ class Business(object):
         """
         build_queue = []
 
-        for item in list(waiting_queue):
+        if type(waiting_queue) != list:
+            waiting_queue = [waiting_queue]
+
+        for item in waiting_queue:
             print 'adding to queue', item
-            build_key = bamboo.queue_build(item)['buildResultKey']
+            build_key = self.bamboo.queue_build(item)['buildResultKey']
             build_queue.append(build_key)
             waiting_queue.remove(item)
 
         while len(build_queue) > 0:
             for item in list(build_queue):
-                state = bamboo.get_results(item)['lifeCycleState']
+                state = self.bamboo.get_results(item)['lifeCycleState']
                 print item, state
                 if state == 'Finished': 
                     build_queue.remove(item)
