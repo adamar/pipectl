@@ -4,6 +4,7 @@ import sys
 import yaml
 import time
 from bamboo_api import BambooAPIClient
+import git import Repo
 
 
 
@@ -65,9 +66,27 @@ class Business(object):
             time.sleep(1)
 
 
-    def bash(self):
+    def bashRunCommand(self):
         """
         Run a command using the bash shell
+        """
+        pass
+
+    def bashRunFile(self, file_location):
+        """
+        Run a bash file using the bash shell
+        """
+        pass
+
+    def gitClone(self, url):
+        """
+        Clone a git repository
+        """
+        pass
+
+    def gitCreateTag(self, dir_location, tag):
+        """
+        Create an annotated git tag
         """
         pass
 
