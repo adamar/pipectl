@@ -4,7 +4,7 @@ import sys
 import yaml
 import time
 from bamboo_api import BambooAPIClient
-import git import Repo
+from git import Repo
 
 
 
@@ -28,14 +28,18 @@ class Business(object):
 
     def _parse_build_yml(self):
         """
-        Parse the build file
+        Attempt to parse STDIN then if that fails attempt to 
+        parse the first argument as a file name
         """
-        with open(self.build_file, 'r') as stream:
-            try:
-                self.pipe = yaml.load(stream)
-            except yaml.YAMLError as exc:
-                print(exc)
-                sys.exit(1)
+        try:
+            self.pipe = yaml.load(self.build_file)
+        except yaml.YAMLError as exc:
+            with open(self.build_file, 'r') as stream:
+                try:
+                    self.pipe = yaml.load(stream)
+                except yaml.YAMLError as exc:
+                    print(exc)
+                    sys.exit(1)
 
     def _preflight(self):
         self.bamboo = BambooAPIClient(user=self.config['bamboo']['username'], 
