@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 install_requires = [
-    'bamboo_api',
+    dependency_links = ['http://github.com/adamar/python-bamboo-api/tarball/master#egg=bamboo_api']
 ]
 
 setup(
