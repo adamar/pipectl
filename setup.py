@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
-install_requires = []
+install_requires = [
+    'bamboo_api'
+    ]
 
 setup(
     name="pipectl",
