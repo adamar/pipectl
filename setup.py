@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
-install_requires = [
-    dependency_links = ['http://github.com/adamar/python-bamboo-api/tarball/master#egg=bamboo_api']
-]
+install_requires = []
 
 setup(
     name="pipectl",
-    version="0.1.0",
+    version="0.1.1",
     description="A CI/CD Build pipeline DSL",
     license="MIT",
     author="adamar",
     author_email="none@none.com",
     url="http://github.com/adamar/pipectl",
     packages=find_packages(),
-    install_requires=install_requires,
+    dependency_links=['http://github.com/adamar/python-bamboo-api/tarball/master#egg=bamboo_api'],
     scripts=['pipectl/pipectl'],
     classifiers=[
         "Programming Language :: Python",
