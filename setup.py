@@ -7,7 +7,7 @@ install_requires = [
 
 setup(
     name="pipectl",
-    version="0.1.1",
+    version="0.1.2",
     description="A CI/CD Build pipeline DSL",
     license="MIT",
     author="adamar",
