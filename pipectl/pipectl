@@ -5,6 +5,8 @@ import yaml
 import time
 from bamboo_api_v2 import BambooAPIClient
 from git import Repo
+from os.path import expanduser
+ 
 
 
 
@@ -13,12 +15,18 @@ class Business(object):
         self.pip = ""
         self.build_file = build_file
         self.config = ""
+        self.config_file = ".pipectl.yml"
 
     def _parse_config_yml(self):
         """
         Parse the main config file
         """
-        with open('~/.pipectl.yml', 'r') as stream:
+        home = expanduser("~")
+        config = home + "/" + self.config_file
+        if not os.path.isfile(config):
+            ## Generate config
+            pass
+        with open(config, 'r') as stream:
             try:
                 self.config = yaml.load(stream)
             except yaml.YAMLError as exc:
