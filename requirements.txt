@@ -1,1 +1,2 @@
--e git://github.com/adamar/python-bamboo-api.git#egg=bamboo_api
+bamboo_api_v2
+GitPython

@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pipectl",
-    version="0.1.7",
+    version="0.1.20",
     description="A CI/CD Build pipeline DSL",
     license="MIT",
     author="adamar",
@@ -12,11 +12,8 @@ setup(
     url="http://github.com/adamar/pipectl",
     packages=find_packages(),
     install_requires=[
-        "bamboo_api",
+        "bamboo_api_v2==0.0.1",
         "GitPython>=2.0.0"
-        ],
-    dependency_links=[
-        'git://github.com/adamar/python-bamboo-api.git#egg=bamboo_api'
         ],
     scripts=['pipectl/pipectl'],
     classifiers=[
