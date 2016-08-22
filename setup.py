@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pipectl",
-    version="0.1.22",
+    version="0.1.23",
     description="A CI/CD Build pipeline DSL",
     license="MIT",
     author="adamar",

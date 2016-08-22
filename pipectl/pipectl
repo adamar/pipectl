@@ -64,7 +64,6 @@ class Business(object):
             print 'adding to queue', item
             build_key = self.bamboo.queue_build(item)['buildResultKey']
             build_queue.append(build_key)
-            waiting_queue.remove(item)
 
         while len(build_queue) > 0:
             for item in list(build_queue):
