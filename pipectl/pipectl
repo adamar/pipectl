@@ -51,6 +51,10 @@ class Business(object):
                                       password=self.config['bamboo']['password'],
                                       host=self.config['bamboo']['hostname']) 
 
+
+    def _buildFail(self, msg):
+        raise Exception(msg)
+
     def bambooBuildAndWait(self, waiting_queue):
         """
         Queue up bamboo build jobs 
@@ -67,10 +71,16 @@ class Business(object):
 
         while len(build_queue) > 0:
             for item in list(build_queue):
-                state = self.bamboo.get_results(item)['lifeCycleState']
-                print item, state
-                if state == 'Finished': 
+                ## Collect Build Status 
+                res = self.bamboo.get_results(item)
+                result = res['successful']
+                state = res['lifeCycleState']
+                ## Build has finished and completed successfully
+                if state == 'Finished' and res == True:
                     build_queue.remove(item)
+                ## Build has finished and failed
+                elif state == 'Finished' and res == False:
+                    self._buildFail("Build Failed: " + item)
             time.sleep(1)
 
 
