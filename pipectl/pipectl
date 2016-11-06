@@ -76,11 +76,14 @@ class Business(object):
                 result = res['successful']
                 state = res['lifeCycleState']
                 ## Build has finished and completed successfully
-                if state == 'Finished' and res == True:
+                if state == 'Finished' and result == True:
                     build_queue.remove(item)
                 ## Build has finished and failed
-                elif state == 'Finished' and res == False:
+                elif state == 'Finished' and result == False:
                     self._buildFail("Build Failed: " + item)
+                ## Build stopped manually
+                elif state == 'NotBuilt':
+                    self._buildFail("Build Stopped Manually: " + item)
             time.sleep(1)
 
 
