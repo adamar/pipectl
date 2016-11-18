@@ -3,6 +3,7 @@
 import sys
 import yaml
 import time
+import subprocess
 from bamboo_api_v2 import BambooAPIClient
 from git import Repo
 from os.path import expanduser
@@ -55,10 +56,11 @@ class Business(object):
     def _buildFail(self, msg):
         raise Exception(msg)
 
-    def bambooBuildAndWait(self, waiting_queue):
+    def bambooBuildAndWait(self, opts):
         """
         Queue up bamboo build jobs 
         """
+        waiting_queue = opts['jobs']
         build_queue = []
 
         if type(waiting_queue) != list:
@@ -87,25 +89,29 @@ class Business(object):
             time.sleep(1)
 
 
-    def bashRunCommand(self):
+    def bashRunCommand(self, opts):
         """
         Run a command using the bash shell
         """
-        pass
+        if 'cmd' in opts:
+            process = subprocess.Popen(opts['cmd'].split(), stdout=subprocess.PIPE)
+            output, error = process.communicate()
+            print output
+            print error
 
-    def bashRunFile(self, file_location):
+    def bashRunFile(self, opts):
         """
         Run a bash file using the bash shell
         """
         pass
 
-    def gitClone(self, url):
+    def gitClone(self, opts):
         """
         Clone a git repository
         """
         pass
 
-    def gitCreateTag(self, dir_location, tag):
+    def gitCreateTag(self, opts):
         """
         Create an annotated git tag
         """
@@ -120,9 +126,8 @@ class Business(object):
         self._parse_build_yml()
         self._preflight()
         for segment in self.pipe:
-            print self.pipe
             for key, value in segment.iteritems():
-                getattr(self, key)(value['jobs'])
+                getattr(self, key)(value)
 
 
 
