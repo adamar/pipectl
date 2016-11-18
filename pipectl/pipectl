@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import sys
+import os
 import yaml
 import time
 import subprocess
@@ -94,7 +95,9 @@ class Business(object):
         Run a command using the bash shell
         """
         if 'cmd' in opts:
-            process = subprocess.Popen(opts['cmd'].split(), stdout=subprocess.PIPE)
+            orig_env = os.environ.copy()
+            cmd = '/bin/bash ' + opts['cmd']
+            process = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE, env=orig_env)
             output, error = process.communicate()
             print output
             print error
