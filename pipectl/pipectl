@@ -4,6 +4,7 @@ import sys
 import os
 import yaml
 import time
+import shlex
 import subprocess
 from bamboo_api_v2 import BambooAPIClient
 from git import Repo
@@ -96,8 +97,8 @@ class Business(object):
         """
         if 'cmd' in opts:
             orig_env = os.environ.copy()
-            cmd = '/bin/bash ' + opts['cmd']
-            process = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE, env=orig_env)
+            cmd = shlex.split(opts['cmd'])
+            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, env=orig_env)
             output, error = process.communicate()
             print output
             print error
