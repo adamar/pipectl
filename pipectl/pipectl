@@ -8,6 +8,7 @@ import shlex
 import subprocess
 from bamboo_api_v2 import BambooAPIClient
 import slacker
+import safygiphy
 from git import Repo
 from os.path import expanduser
 import os
@@ -123,12 +124,21 @@ class Business(object):
         """
         pass
 
-    def notifyViaSlack(self, msg, channel):
+    def _get_gif(self, keyword):
+        g = safygiphy.Giphy()
+        r = g.random(tag=keyword)
+        return r['data']['image_url']
+
+    def notifyViaSlack(self, opts):
         """
         Send a notification via Slack
         """
         if '#' not in channel:
             channel = '#' + channel
+
+        if 'tag' in opts:
+            msg = msg + ' ' + self._get_gif(opts['tag'])
+
         self.slack.chat.post_message(channel, msg)
 
 
