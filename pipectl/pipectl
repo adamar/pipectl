@@ -7,6 +7,7 @@ import time
 import shlex
 import subprocess
 from bamboo_api_v2 import BambooAPIClient
+import slacker
 from git import Repo
 from os.path import expanduser
 import os
@@ -53,6 +54,7 @@ class Business(object):
         self.bamboo = BambooAPIClient(user=self.config['bamboo']['username'], 
                                       password=self.config['bamboo']['password'],
                                       host=self.config['bamboo']['hostname']) 
+        self.slack = Slacker(self.config['slack']['api_key'])
 
 
     def _buildFail(self, msg):
@@ -120,6 +122,15 @@ class Business(object):
         Create an annotated git tag
         """
         pass
+
+    def notifyViaSlack(self, msg, channel):
+        """
+        Send a notification via Slack
+        """
+        if '#' not in channel:
+            channel = '#' + channel
+        self.slack.chat.post_message(channel, msg)
+
 
 
     def run(self):
