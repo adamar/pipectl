@@ -12,8 +12,10 @@ setup(
     url="http://github.com/adamar/pipectl",
     packages=find_packages(),
     install_requires=[
-        "bamboo_api_v2==0.0.1",
-        "GitPython>=2.0.0"
+        "bamboo_api_v2>=0.0.1",
+        "GitPython>=2.0.0",
+        "safygiphy>=1.1.0",
+        "slacker>=0.9.29"
         ],
     scripts=['pipectl/pipectl'],
     classifiers=[
