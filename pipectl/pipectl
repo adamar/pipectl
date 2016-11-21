@@ -11,7 +11,6 @@ from slacker import Slacker
 import safygiphy
 from git import Repo
 from os.path import expanduser
-import os
  
 
 
@@ -98,13 +97,15 @@ class Business(object):
         """
         Run a command using the bash shell
         """
-        if 'cmd' in opts:
-            orig_env = os.environ.copy()
-            cmd = shlex.split(opts['cmd'])
-            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, env=orig_env)
-            output, error = process.communicate()
-            print output
-            print error
+        if 'cmd' not in opts:
+            self._buildFail('"cmd" missing from "bashRunCommand" block')
+
+        orig_env = os.environ.copy()
+        cmd = shlex.split(opts['cmd'])
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, env=orig_env)
+        output, error = process.communicate()
+        print output
+        print error
 
     def bashRunFile(self, opts):
         """
@@ -133,6 +134,13 @@ class Business(object):
         """
         Send a notification via Slack
         """
+
+        if 'channel' not in opts:
+            self._buildFail('"channel" missing from "notifyViaSlack" block')
+
+        if 'msg' not in opts:
+            self._buildFail('"msg" missing from "notifyViaSlack" block')
+
         channel = opts['channel']
         msg = opts['msg']
 
