@@ -7,7 +7,7 @@ import time
 import shlex
 import subprocess
 from bamboo_api_v2 import BambooAPIClient
-import slacker
+from slacker import Slacker
 import safygiphy
 from git import Repo
 from os.path import expanduser
@@ -133,6 +133,9 @@ class Business(object):
         """
         Send a notification via Slack
         """
+        channel = opts['channel']
+        msg = opts['msg']
+
         if '#' not in channel:
             channel = '#' + channel
 

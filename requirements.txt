@@ -1,2 +1,4 @@
 bamboo_api_v2
 GitPython
+slacker
+safygiphy
