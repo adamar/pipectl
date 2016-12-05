@@ -84,6 +84,7 @@ class Business(object):
     def _buildFail(self, msg):
         raise Exception(msg)
 
+    @retry()
     def bambooBuildAndWait(self, opts):
         """
         Queue up bamboo build jobs 
@@ -131,12 +132,14 @@ class Business(object):
         print output
         print error
 
+    @retry()
     def bashRunFile(self, opts):
         """
         Run a bash file using the bash shell
         """
         pass
 
+    @retry()
     def gitClone(self, opts):
         """
         Clone a git repository
@@ -146,6 +149,7 @@ class Business(object):
 
         repo = git.Repo.clone_from(url, dest)
 
+    @retry()
     def gitCreateTag(self, opts):
         """
         Create an annotated git tag
@@ -157,6 +161,7 @@ class Business(object):
         r = g.random(tag=keyword)
         return r['data']['image_url']
 
+    @retry()
     def notifyViaSlack(self, opts):
         """
         Send a notification via Slack
