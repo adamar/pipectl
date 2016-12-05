@@ -10,8 +10,33 @@ from bamboo_api_v2 import BambooAPIClient
 from slacker import Slacker
 import safygiphy
 import git
+from functools import wraps
 from os.path import expanduser
  
+
+def retry():
+    def retry_decorator(fn):
+        @wraps(fn)
+        def fn_retry(*args, **kwargs):
+
+            fn_args = args[1]
+            if 'retries' in fn_args:
+                retries = fn_args['retries']
+            else:
+                retries = 0
+
+            while retries > 1:
+                try:
+                    return fn(*args, **kwargs)
+                except Exception, e:
+                    print "Error: %s, Retrying..." % (e)
+                    time.sleep(2)
+                    retries -= 1
+
+            return fn(*args, **kwargs)
+        return fn_retry
+    return retry_decorator
+
 
 
 
@@ -56,7 +81,6 @@ class Business(object):
                                       host=self.config['bamboo']['hostname']) 
         self.slack = Slacker(self.config['slack']['api_key'])
 
-
     def _buildFail(self, msg):
         raise Exception(msg)
 
@@ -92,7 +116,7 @@ class Business(object):
                     self._buildFail("Build Stopped Manually: " + item)
             time.sleep(1)
 
-
+    @retry()
     def bashRunCommand(self, opts):
         """
         Run a command using the bash shell
@@ -167,6 +191,11 @@ class Business(object):
         for segment in self.pipe:
             for key, value in segment.iteritems():
                 getattr(self, key)(value)
+
+
+
+
+
 
 
 
