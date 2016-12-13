@@ -137,7 +137,19 @@ class Business(object):
         """
         Run a bash file using the bash shell
         """
-        pass
+        if 'file' not in opts:
+            self._buildFail('"file" missing from "bashRunFile" block')
+
+        orig_env = os.environ.copy()
+        bash_file = opts['file']
+        process = subprocess.Popen(["/bin/bash", bash_file], stdout=subprocess.PIPE, env=orig_env)
+        output, error = process.communicate()
+        if output != None:
+            print output
+        if error != None:
+            print error
+
+
 
     @retry()
     def gitClone(self, opts):
